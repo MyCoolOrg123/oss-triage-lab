@@ -1,12 +1,17 @@
 # OSS Triage Lab
 
-A public repository with intentionally small code and high-signal bug reports. Use
-it to test Discord flows that reproduce, label, deduplicate, and route issues before
-a maintainer opens the thread.
+OSS Triage Lab standardizes how maintainers classify reports from community
+channels before they become engineering work.
 
-## Bot scenarios to try
+## What lives here
 
-- Convert Discord bug reports into GitHub issues with labels and reproduction steps.
-- Ask whether a new report duplicates an existing issue.
-- Ask the bot to identify the owner from `docs/triage-playbook.md`.
-- Ask for a minimal repro command using the files in `tests/fixtures/`.
+- `docs/triage-playbook.md` defines labels, owners, and reproduction rules.
+- `src/triage.py` contains the current report classifier.
+- `tests/fixtures/` stores small reports used to reproduce common cases.
+- `tests/test_triage.py` covers the expected routing behavior.
+
+## Maintainer workflow
+
+1. Confirm whether a report is reproducible or already tracked.
+2. Assign one primary label and one owning group.
+3. Add a fixture when a report cannot be evaluated from the original message.
