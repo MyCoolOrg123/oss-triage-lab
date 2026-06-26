@@ -1,0 +1,4 @@
+{
+  "title": "Crash on import",
+  "body": "Traceback points at parseReport when loading a malformed report."
+}

@@ -1,0 +1,84 @@
+{
+  "issues": [
+    {
+      "body": "Fixture: `tests/fixtures/crash-report.json`. Expected `classify_report` to route this to parser owner with `bug` label.",
+      "labels": [
+        "bug"
+      ],
+      "title": "Bug: crash on malformed report import"
+    },
+    {
+      "body": "Reports containing both `crash` and `same as` sometimes receive both `bug` and `duplicate`. Please choose one primary label and cite the playbook.",
+      "labels": [
+        "routing"
+      ],
+      "title": "Routing: conflicting labels on Discord-created reports"
+    },
+    {
+      "body": "A user only said 'the bot times out sometimes'. We need environment, command, and fixture before assigning an owner.",
+      "labels": [
+        "needs-repro"
+      ],
+      "title": "Needs repro: intermittent timeout with no fixture"
+    }
+  ],
+  "labels": [
+    {
+      "color": "d73a4a",
+      "description": "Confirmed behavior regression",
+      "name": "bug"
+    },
+    {
+      "color": "cfd3d7",
+      "description": "Missing reproduction steps",
+      "name": "needs-repro"
+    },
+    {
+      "color": "c5def5",
+      "description": "Already tracked elsewhere",
+      "name": "duplicate"
+    },
+    {
+      "color": "bfdadc",
+      "description": "Needs owner or label correction",
+      "name": "routing"
+    },
+    {
+      "color": "7057ff",
+      "description": "Small scoped fix",
+      "name": "good first issue"
+    }
+  ],
+  "organization": "MyCoolOrg123",
+  "pull_requests": [
+    {
+      "body": "Makes duplicate reports resolve to one primary label before parser crash handling.",
+      "branch": "fix/deduplicate-label-routing",
+      "changes": {
+        "src/triage.py": "from dataclasses import dataclass\n\n\n@dataclass(frozen=True)\nclass TriageResult:\n    label: str\n    owner: str\n    needs_repro: bool\n\n\ndef classify_report(title: str, body: str) -> TriageResult:\n    text = f\"{title} {body}\".lower()\n\n    if \"duplicate\" in text or \"same as\" in text or \"already tracked\" in text:\n        return TriageResult(\"duplicate\", \"@maintainers/community\", False)\n\n    if \"traceback\" in text or \"crash\" in text:\n        return TriageResult(\"bug\", \"@maintainers/parser\", False)\n\n    if \"label\" in text or \"route\" in text:\n        return TriageResult(\"routing\", \"@maintainers/community\", False)\n\n    return TriageResult(\"needs-repro\", \"@maintainers/qa\", True)\n"
+      },
+      "draft": false,
+      "title": "Prefer duplicate routing before parser routing"
+    },
+    {
+      "body": "Adds a minimal fixture so Discord-created timeout issues can be reproduced.",
+      "branch": "test/add-timeout-fixture",
+      "changes": {
+        "tests/fixtures/timeout-report.json": "{\n  \"title\": \"Command timeout\",\n  \"body\": \"The /report-bug command times out after three seconds with no stack trace.\"\n}\n"
+      },
+      "draft": true,
+      "title": "Add fixture for timeout reports"
+    }
+  ],
+  "repository": {
+    "description": "Public OSS bug-triage lab with reproducible reports, labels, owners, and fixtures.",
+    "name": "oss-triage-lab",
+    "topics": [
+      "discord",
+      "oss",
+      "triage",
+      "coderabbit-demo"
+    ],
+    "visibility": "public"
+  }
+}
