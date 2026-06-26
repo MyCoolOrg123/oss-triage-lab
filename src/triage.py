@@ -11,7 +11,7 @@ class TriageResult:
 def classify_report(title: str, body: str) -> TriageResult:
     text = f"{title} {body}".lower()
 
-    if "duplicate" in text or "same as" in text:
+    if "duplicate" in text or "same as" in text or "already tracked" in text:
         return TriageResult("duplicate", "@maintainers/community", False)
 
     if "traceback" in text or "crash" in text:
