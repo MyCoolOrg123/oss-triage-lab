@@ -1,0 +1,4 @@
+{
+  "title": "Command timeout",
+  "body": "The /report-bug command times out after three seconds with no stack trace."
+}
