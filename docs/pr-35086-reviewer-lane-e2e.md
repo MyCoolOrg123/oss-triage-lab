@@ -5,3 +5,5 @@ Disposable commit used to verify that Triage shows **Start Review** before
 reviewed.
 
 This follow-up commit verifies the rebuilt Hutch preview sees a new head.
+
+This final fixture head is intentionally left for an on-demand review.
